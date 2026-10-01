@@ -1,0 +1,19 @@
+Product photos bundled with VideoHub coursework
+
+product-laptop.jpg
+Source: Unsplash photo-1496181133206-80ce9b88a853
+Unsplash License: https://unsplash.com/license
+
+product-keyboard.jpg
+Source: Unsplash photo-1618384887929-16ec33fab9ef
+Unsplash License: https://unsplash.com/license
+
+product-headphones.jpg
+Source: Unsplash photo-1505740420928-5e560c06d30e
+Unsplash License: https://unsplash.com/license
+
+product-usb.jpg
+Source: https://commons.wikimedia.org/wiki/File:Kingston_Technology_DataTraveler_G4_USB_flash_drive_USB_3.0_32_Gb.jpg
+Author: Dmitry Makeev
+License: CC BY-SA 4.0
+License URL: https://creativecommons.org/licenses/by-sa/4.0/

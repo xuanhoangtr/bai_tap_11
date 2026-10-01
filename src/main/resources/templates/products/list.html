@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/user}">
+<head><title>Sản phẩm</title></head>
+<body><main layout:fragment="content">
+    <div class="section-heading mb-4">
+        <div><p class="eyebrow">SẢN PHẨM</p><h1>Danh sách sản phẩm</h1></div>
+        <a th:href="@{/cart}" th:if="${session.currentUser != null}">Giỏ hàng →</a>
+    </div>
+    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+    <div class="alert alert-warning" th:if="${error}" th:text="${error}"></div>
+    <div class="row g-4">
+        <div class="col-sm-6 col-lg-4" th:each="product : ${pageData.items}">
+            <article class="video-card">
+                <a th:href="@{/products/{id}(id=${product.productId})}"><img class="product-image" th:if="${product.image != null and !product.image.isBlank()}" th:src="${#strings.startsWith(product.image, 'upload-') ? '/product-images/' + product.image : '/images/' + product.image}" alt="Ảnh sản phẩm"><div class="product-image-placeholder" th:unless="${product.image != null and !product.image.isBlank()}">Chưa có ảnh</div></a>
+                <div class="p-3">
+                    <span class="tag" th:text="${product.categoryName}"></span>
+                    <h3><a class="product-title" th:href="@{/products/{id}(id=${product.productId})}" th:text="${product.productName}"></a></h3>
+                    <small th:text="${product.description}"></small>
+                    <div class="video-meta d-flex justify-content-between mt-2"><strong class="text-primary" th:text="${#numbers.formatInteger(product.price, 0, 'POINT') + ' ₫'}"></strong><span th:text="${product.stock > 0 ? 'Còn ' + product.stock : 'Tạm hết hàng'}"></span></div>
+                    <form method="post" class="d-flex gap-2 mt-3" th:action="@{/products/{id}/cart(id=${product.productId})}">
+                        <input class="form-control quantity-input" type="number" name="quantity" min="1" th:max="${product.stock}" value="1" th:disabled="${product.stock < 1}" aria-label="Số lượng">
+                        <button class="btn btn-primary flex-grow-1" th:disabled="${product.stock < 1}">Thêm vào giỏ</button>
+                    </form>
+                </div>
+            </article>
+        </div>
+    </div>
+    <div class="panel text-center" th:if="${#lists.isEmpty(pageData.items)}">Hiện chưa có sản phẩm.</div>
+    <nav class="pagination-wrap" th:if="${pageData.totalPages > 1}"><a th:if="${!pageData.first}" th:href="@{/products(page=${pageData.page - 1})}">‹</a><a th:each="p : ${#numbers.sequence(0, pageData.totalPages - 1)}" th:classappend="${p == pageData.page ? 'active' : ''}" th:href="@{/products(page=${p})}" th:text="${p + 1}"></a><a th:if="${!pageData.last}" th:href="@{/products(page=${pageData.page + 1})}">›</a></nav>
+</main></body>
+</html>

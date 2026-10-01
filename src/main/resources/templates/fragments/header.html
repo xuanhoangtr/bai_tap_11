@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="header" class="site-header">
+    <div class="container d-flex align-items-center justify-content-between gap-3 py-3">
+        <a class="brand" th:href="@{/}">VideoHub</a>
+        <nav class="d-flex align-items-center gap-2 flex-wrap justify-content-end">
+            <a class="nav-link" th:href="@{/}">Trang chủ</a>
+            <a class="nav-link" th:href="@{/products}">Sản phẩm</a>
+            <a class="nav-link" th:href="@{/videos}">Video</a>
+            <a class="nav-link" th:href="@{/cart}" th:if="${session.currentUser != null}">Giỏ hàng</a>
+            <a class="nav-link" th:href="@{/login}" th:if="${session.currentUser == null}">Đăng nhập</a>
+            <a class="nav-link nav-admin" th:href="@{/admin}" th:if="${session.currentUser != null and session.currentUser.admin}">Trang quản trị</a>
+            <a class="user-chip" th:if="${session.currentUser != null}" th:href="@{/profile}" th:text="${session.currentUser.fullname}"></a>
+            <a class="btn btn-sm btn-outline-light" th:href="@{/logout}" th:if="${session.currentUser != null}">Đăng xuất</a>
+        </nav>
+    </div>
+</header>
+</body>
+</html>

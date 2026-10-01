@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/user}">
+<head><title>Trang chủ</title></head>
+<body>
+<main layout:fragment="content">
+    <div class="section-heading"><div><p class="eyebrow">CATEGORIES</p><h2>Chủ đề học tập</h2></div><a th:href="@{/videos}">Xem tất cả →</a></div>
+    <div class="row g-3 mb-5"><div class="col-md-4" th:each="category : ${categories}"><a class="category-card" th:href="@{/videos(categoryId=${category.categoryId})}"><span class="category-icon">✦</span><span><strong th:text="${category.categoryName}"></strong><small th:text="${category.videoCount + ' video'}"></small></span><b>↗</b></a></div></div>
+    <div class="section-heading"><div><p class="eyebrow">MỚI NHẤT</p><h2>Video nổi bật</h2></div></div>
+    <div class="row g-4"><div class="col-md-4" th:each="video : ${videos.items}"><a class="video-card" th:href="@{/videos/{id}(id=${video.videoId})}"><img th:src="@{'/images/' + ${video.poster}}" alt="Poster"><div class="p-3"><span class="tag" th:text="${video.categoryName}"></span><h3 th:text="${video.title}"></h3><small th:text="${video.views + ' lượt xem · ' + video.videoCode}"></small></div></a></div></div>
+</main>
+</body>
+</html>

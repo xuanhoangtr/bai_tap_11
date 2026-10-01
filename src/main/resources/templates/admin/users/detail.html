@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/admin}">
+<head><title>Chi tiết user</title></head>
+<body>
+<main layout:fragment="content">
+  <a class="back-link" th:href="@{/admin/users}">← Quay lại danh sách users</a>
+  <div class="profile-card mt-3"><div class="profile-hero"><div><p class="eyebrow">USER DETAIL</p><h1 th:text="${user.fullname}">Người dùng</h1><p class="profile-handle" th:text="'@' + ${user.username}">@username</p><span class="badge text-bg-dark" th:if="${user.admin}">Admin</span><span class="badge text-bg-light" th:unless="${user.admin}">User</span></div></div><div class="profile-grid"><div><span>Họ tên</span><strong th:text="${user.fullname}"></strong></div><div><span>Username</span><strong th:text="${user.username}"></strong></div><div><span>Email</span><strong th:text="${user.email}"></strong></div><div><span>Số điện thoại</span><strong th:text="${user.phone != null and !user.phone.isBlank() ? user.phone : 'Chưa cập nhật'}"></strong></div><div><span>Vai trò</span><strong th:text="${user.admin ? 'Admin' : 'User'}"></strong></div><div><span>Trạng thái</span><strong th:text="${user.active ? 'Đang hoạt động' : 'Chờ kích hoạt'}"></strong></div></div><div class="d-flex gap-2 mt-4"><a class="btn btn-primary" th:href="@{/admin/users/{id}/edit(id=${user.userId})}">Sửa user</a><a class="btn btn-outline-secondary" th:href="@{/admin/users}">Danh sách</a></div></div>
+</main>
+</body>
+</html>

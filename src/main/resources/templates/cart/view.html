@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/user}">
+<head><title>Giỏ hàng</title></head>
+<body><main layout:fragment="content">
+    <div class="section-heading mb-4"><div><p class="eyebrow">GIỎ HÀNG</p><h1>Giỏ hàng</h1><p class="text-muted mb-0">Mỗi sản phẩm bị giới hạn theo số lượng còn trong kho.</p></div><a th:href="@{/orders}">Lịch sử đơn hàng →</a></div>
+    <div class="alert alert-success" th:if="${success}" th:text="${success}"></div><div class="alert alert-warning" th:if="${error}" th:text="${error}"></div>
+    <div class="row g-4" th:if="${!#lists.isEmpty(items)}">
+        <div class="col-lg-8"><div class="panel cart-panel">
+            <article class="cart-row" th:each="item : ${items}">
+                <img th:if="${item.product.image != null and !item.product.image.isBlank()}" th:src="${#strings.startsWith(item.product.image, 'upload-') ? '/product-images/' + item.product.image : '/images/' + item.product.image}" alt="Sản phẩm">
+                <div class="cart-image-placeholder" th:unless="${item.product.image != null and !item.product.image.isBlank()}">Chưa có ảnh</div>
+                <div class="cart-info">
+                    <a th:href="@{/products/{id}(id=${item.product.productId})}" th:text="${item.product.productName}"></a>
+                    <small th:text="${#numbers.formatInteger(item.product.price, 0, 'POINT') + ' ₫ / sản phẩm'}"></small>
+                    <small class="text-danger" th:if="${item.product.stock < item.quantity}" th:text="${'Kho chỉ còn ' + item.product.stock + ', vui lòng sửa số lượng'}"></small>
+                    <div class="cart-row-actions">
+                        <form class="d-flex gap-2 align-items-center" method="post" th:action="@{/cart/{id}/quantity(id=${item.product.productId})}">
+                            <input class="form-control quantity-input" type="number" name="quantity" min="1" th:max="${item.product.stock}" th:value="${item.quantity}" th:disabled="${item.product.stock < 1}">
+                            <button class="btn btn-sm btn-outline-primary" th:disabled="${item.product.stock < 1}">Cập nhật</button>
+                        </form>
+                        <form method="post" th:action="@{/cart/{id}/remove(id=${item.product.productId})}"><button class="btn btn-sm btn-link text-danger px-0">Xóa</button></form>
+                    </div>
+                </div>
+                <strong class="cart-line-total" th:text="${#numbers.formatInteger(item.lineTotal, 0, 'POINT') + ' ₫'}"></strong>
+            </article>
+        </div></div>
+        <div class="col-lg-4"><div class="panel order-summary"><h2 class="h5">Tổng kết đơn hàng</h2><div class="summary-line"><span>Tạm tính</span><strong th:text="${#numbers.formatInteger(total, 0, 'POINT') + ' ₫'}"></strong></div><div class="summary-line"><span>Thanh toán</span><strong>COD</strong></div><hr><div class="summary-line"><strong>Tổng cộng</strong><strong th:text="${#numbers.formatInteger(total, 0, 'POINT') + ' ₫'}"></strong></div><a class="btn btn-primary w-100 mt-3" th:href="@{/checkout}">Tiến hành đặt hàng</a><small class="d-block text-muted mt-3">Tồn kho được kiểm tra lại khi đặt hàng.</small></div></div>
+    </div>
+    <div class="panel text-center py-5" th:if="${#lists.isEmpty(items)}"><h2>Giỏ hàng đang trống</h2><p class="text-muted">Thêm sản phẩm để tiếp tục.</p><a class="btn btn-primary" th:href="@{/products}">Xem sản phẩm</a></div>
+</main></body>
+</html>

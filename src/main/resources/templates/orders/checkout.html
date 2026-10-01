@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/user}">
+<head><title>Thanh toán COD</title></head>
+<body><main layout:fragment="content">
+    <a class="back-link" th:href="@{/cart}">← Quay lại giỏ hàng</a>
+    <div class="section-heading my-3"><div><p class="eyebrow">THANH TOÁN COD</p><h1>Thông tin giao hàng</h1></div></div>
+    <div class="alert alert-warning" th:if="${error}" th:text="${error}"></div>
+    <form method="post" th:action="@{/checkout}" th:object="${form}" class="row g-4">
+        <div class="col-lg-7"><div class="panel"><div class="row g-3">
+            <div class="col-md-6"><label class="form-label">Tên người nhận</label><input class="form-control" th:field="*{receiverName}" maxlength="100" required></div>
+            <div class="col-md-6"><label class="form-label">Số điện thoại</label><input class="form-control" th:field="*{receiverPhone}" maxlength="20" required></div>
+            <div class="col-12"><label class="form-label">Địa chỉ nhận hàng</label><textarea class="form-control" th:field="*{shippingAddress}" maxlength="300" rows="3" required></textarea></div>
+            <div class="col-12"><label class="form-label">Ghi chú <span class="text-muted">(không bắt buộc)</span></label><textarea class="form-control" th:field="*{notes}" maxlength="500" rows="2"></textarea></div>
+        </div><div class="alert alert-info mt-4 mb-0">Thanh toán bằng tiền mặt cho nhân viên giao hàng khi nhận đơn.</div></div></div>
+        <div class="col-lg-5"><div class="panel order-summary"><h2 class="h5">Đơn hàng của bạn</h2><div class="checkout-line" th:each="item : ${items}"><span><strong th:text="${item.product.productName}"></strong><small th:text="${'Số lượng: ' + item.quantity}"></small></span><b th:text="${#numbers.formatInteger(item.lineTotal, 0, 'POINT') + ' ₫'}"></b></div><hr><div class="summary-line"><strong>Tổng cần thanh toán</strong><strong th:text="${#numbers.formatInteger(total, 0, 'POINT') + ' ₫'}"></strong></div><button class="btn btn-primary w-100 mt-3">Đặt hàng COD</button></div></div>
+    </form>
+</main></body>
+</html>

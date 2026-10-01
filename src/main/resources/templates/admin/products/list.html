@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/admin}">
+<head><title>Quản lý sản phẩm</title></head>
+<body>
+<main layout:fragment="content">
+  <div class="section-heading mb-4">
+    <div><p class="eyebrow">PRODUCT MANAGEMENT</p><h1>Quản lý sản phẩm</h1><p class="text-muted mb-0">Có <strong th:text="${pageData.totalItems}">0</strong> sản phẩm, 6 sản phẩm mỗi trang.</p></div>
+    <a class="btn btn-primary" th:href="@{/admin/products/new}">+ Thêm sản phẩm</a>
+  </div>
+  <div class="alert alert-success" th:if="${success}" th:text="${success}"></div>
+  <div class="panel"><div class="table-responsive"><table class="table align-middle">
+    <thead><tr><th>ID</th><th>Sản phẩm</th><th>Mã</th><th>Danh mục</th><th>Giá</th><th>Tồn kho</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
+    <tbody>
+      <tr th:each="product : ${pageData.items}">
+        <td th:text="${product.productId}"></td>
+        <td><div class="d-flex align-items-center gap-2"><img class="product-admin-thumb" th:if="${product.image != null and !product.image.isBlank()}" th:src="${#strings.startsWith(product.image, 'upload-') ? '/product-images/' + product.image : '/images/' + product.image}" alt=""><div class="product-admin-thumb product-admin-thumb-empty" th:unless="${product.image != null and !product.image.isBlank()}">—</div><strong th:text="${product.productName}"></strong></div></td>
+        <td th:text="${product.productCode}"></td>
+        <td th:text="${product.categoryName != null ? product.categoryName : '—'}"></td>
+        <td class="text-nowrap" th:text="${#numbers.formatInteger(product.price, 0, 'POINT') + ' ₫'}"></td>
+        <td th:text="${product.stock}"></td>
+        <td><span class="badge text-bg-success" th:if="${product.active}">Đang bán</span><span class="badge text-bg-secondary" th:unless="${product.active}">Đã ẩn</span></td>
+        <td class="text-end text-nowrap">
+          <a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/products/{id}(id=${product.productId})}">Xem</a>
+          <a class="btn btn-sm btn-outline-primary" th:href="@{/admin/products/{id}/edit(id=${product.productId})}">Sửa</a>
+          <form class="d-inline" method="post" th:action="@{/admin/products/{id}/delete(id=${product.productId})}" th:if="${product.active}" onsubmit="return confirm('Ẩn sản phẩm này khỏi cửa hàng?')"><button class="btn btn-sm btn-outline-danger">Xóa</button></form>
+        </td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(pageData.items)}"><td colspan="8" class="text-center py-4 text-muted">Chưa có sản phẩm.</td></tr>
+    </tbody>
+  </table></div></div>
+  <nav class="pagination-wrap" th:if="${pageData.totalPages > 1}"><a th:if="${!pageData.first}" th:href="@{/admin/products(page=${pageData.page - 1})}">‹</a><a th:each="p : ${#numbers.sequence(0, pageData.totalPages - 1)}" th:classappend="${p == pageData.page ? 'active' : ''}" th:href="@{/admin/products(page=${p})}" th:text="${p + 1}"></a><a th:if="${!pageData.last}" th:href="@{/admin/products(page=${pageData.page + 1})}">›</a></nav>
+</main>
+</body>
+</html>

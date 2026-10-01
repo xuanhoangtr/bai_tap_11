@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/admin}">
+<head><title>Quản lý users</title></head>
+<body>
+<main layout:fragment="content">
+  <div class="section-heading mb-4"><div><p class="eyebrow">USER MANAGEMENT</p><h1>Quản lý users</h1><p class="text-muted mb-0">Danh sách có <strong th:text="${pageData.totalItems}">0</strong> tài khoản, 6 user mỗi trang.</p></div><a class="btn btn-primary" th:href="@{/admin/users/new}">+ Thêm user</a></div>
+  <div class="panel"><div class="table-responsive"><table class="table align-middle"><thead><tr><th>ID</th><th>Người dùng</th><th>Email</th><th>Vai trò</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead><tbody><tr th:each="user : ${pageData.items}"><td th:text="${user.userId}"></td><td><strong th:text="${user.fullname}"></strong><small class="d-block text-muted" th:text="'@' + ${user.username}"></small></td><td th:text="${user.email}"></td><td><span class="badge text-bg-dark" th:if="${user.admin}">Admin</span><span class="badge text-bg-light" th:unless="${user.admin}">User</span></td><td><span class="badge text-bg-success" th:if="${user.active}">Active</span><span class="badge text-bg-warning" th:unless="${user.active}">Chờ kích hoạt</span></td><td class="text-end"><a class="btn btn-sm btn-outline-secondary" th:href="@{/admin/users/{id}(id=${user.userId})}">Xem</a> <a class="btn btn-sm btn-outline-primary" th:href="@{/admin/users/{id}/edit(id=${user.userId})}">Sửa</a> <form class="d-inline" method="post" th:action="@{/admin/users/{id}/delete(id=${user.userId})}" onsubmit="return confirm('Xóa user này?')"><button class="btn btn-sm btn-outline-danger">Xóa</button></form></td></tr><tr th:if="${#lists.isEmpty(pageData.items)}"><td colspan="6" class="text-center py-4 text-muted">Chưa có user.</td></tr></tbody></table></div></div>
+  <nav class="pagination-wrap" th:if="${pageData.totalPages > 1}"><a th:if="${!pageData.first}" th:href="@{/admin/users(page=${pageData.page - 1})}">‹</a><a th:each="p : ${#numbers.sequence(0, pageData.totalPages - 1)}" th:classappend="${p == pageData.page ? 'active' : ''}" th:href="@{/admin/users(page=${p})}" th:text="${p + 1}"></a><a th:if="${!pageData.last}" th:href="@{/admin/users(page=${pageData.page + 1})}">›</a></nav>
+</main>
+</body>
+</html>

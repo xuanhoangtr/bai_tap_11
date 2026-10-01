@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/admin}">
+<head><title>Bảng điều khiển</title></head>
+<body>
+<main layout:fragment="content">
+  <div class="section-heading mb-4"><div><p class="eyebrow">ADMIN CONSOLE</p><h1>Bảng điều khiển</h1><p class="text-muted">Theo dõi dữ liệu và quản lý VideoHub.</p></div><div class="d-flex gap-2 flex-wrap"><a class="btn btn-outline-primary" th:href="@{/admin/users}">Quản lý users</a><a class="btn btn-primary" th:href="@{/admin/products}">Quản lý sản phẩm →</a></div></div>
+  <div class="row g-4 mb-4"><div class="col-md-4"><div class="metric-card"><span>Tổng số user</span><strong th:text="${userCount}">0</strong><small>Phân trang 6 user mỗi trang</small></div></div><div class="col-md-4"><div class="metric-card"><span>Category</span><strong th:text="${#lists.size(categories)}">0</strong><small>Chủ đề đang hiển thị</small></div></div><div class="col-md-4"><div class="metric-card"><span>Video</span><strong th:text="${#aggregates.sum(categories.![videoCount])}">0</strong><small>Đếm theo từng category</small></div></div></div>
+  <div class="panel"><div class="section-heading"><div><p class="eyebrow">CATEGORY REPORT</p><h2>Số lượng video theo category</h2></div><a th:href="@{/videos}">Xem thư viện →</a></div><div class="table-responsive"><table class="table align-middle"><thead><tr><th>Category</th><th>Mã</th><th>Số video</th><th>Trạng thái</th></tr></thead><tbody><tr th:each="category : ${categories}"><td th:text="${category.categoryName}"></td><td><span class="tag" th:text="${category.categoryCode}"></span></td><td th:text="${category.videoCount}"></td><td><span class="badge text-bg-success" th:if="${category.status}">Đang bật</span><span class="badge text-bg-secondary" th:unless="${category.status}">Tắt</span></td></tr></tbody></table></div></div>
+</main>
+</body>
+</html>

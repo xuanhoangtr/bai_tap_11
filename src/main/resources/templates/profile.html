@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/user}">
+<head><title>Thông tin tài khoản</title></head>
+<body>
+<main layout:fragment="content">
+  <a class="back-link" th:href="@{/}">← Về trang chủ</a>
+  <div class="profile-card mt-3"><div class="profile-hero"><img class="profile-avatar" th:src="@{'/images/' + ${user.images}}" alt="Ảnh đại diện"><div><p class="eyebrow">MY PROFILE</p><h1 th:text="${user.fullname}">Người dùng</h1><p class="profile-handle" th:text="'@' + ${user.username}">@username</p><span class="badge text-bg-dark" th:if="${user.admin}">Admin</span><span class="badge text-bg-light" th:unless="${user.admin}">User</span></div></div><div class="profile-grid"><div><span>Họ tên</span><strong th:text="${user.fullname}"></strong></div><div><span>Username</span><strong th:text="${user.username}"></strong></div><div><span>Email</span><strong th:text="${user.email}"></strong></div><div><span>Số điện thoại</span><strong th:text="${user.phone != null and !user.phone.isBlank() ? user.phone : 'Chưa cập nhật'}"></strong></div><div><span>Trạng thái</span><strong th:text="${user.active ? 'Đang hoạt động' : 'Chờ kích hoạt'}"></strong></div></div></div>
+</main>
+</body>
+</html>
