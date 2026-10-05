@@ -44,9 +44,13 @@ public class OrderRepositoryJdbc_24162037 implements OrderRepository_24162037 {
         Order_24162037 order = jdbc.queryForObject("SELECT * FROM de4_orders WHERE order_id=?", this::mapOrder, orderId);
         if (order != null) order.setItems(findItems(orderId)); return order;
     }
-    @Override public List<Order_24162037> findByUser(Long userId) {
-        List<Order_24162037> orders = jdbc.query("SELECT * FROM de4_orders WHERE user_id=? ORDER BY created_at DESC,order_id DESC", this::mapOrder, userId);
-        return orders;
+    @Override public List<Order_24162037> findByUser(Long userId, String status) {
+        String sql = "SELECT * FROM de4_orders WHERE user_id=?";
+        if (status != null) {
+            sql += " AND order_status=?";
+            return jdbc.query(sql + " ORDER BY created_at DESC,order_id DESC", this::mapOrder, userId, status);
+        }
+        return jdbc.query(sql + " ORDER BY created_at DESC,order_id DESC", this::mapOrder, userId);
     }
     @Override public Optional<Order_24162037> findOwnedById(Long orderId, Long userId) {
         List<Order_24162037> rows = jdbc.query("SELECT * FROM de4_orders WHERE order_id=? AND user_id=?", this::mapOrder, orderId, userId);

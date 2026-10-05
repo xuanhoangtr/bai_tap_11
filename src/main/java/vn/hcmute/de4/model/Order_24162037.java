@@ -34,6 +34,16 @@ public class Order_24162037 {
     public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
     public String getOrderStatus() { return orderStatus; }
     public void setOrderStatus(String orderStatus) { this.orderStatus = orderStatus; }
+    public String getOrderStatusLabel() {
+        return OrderStatus_24162037.fromCode(orderStatus)
+                .map(OrderStatus_24162037::getLabel)
+                .orElse(orderStatus == null || orderStatus.isBlank() ? "Chưa cập nhật" : orderStatus);
+    }
+    public String getOrderStatusBadgeColor() {
+        return OrderStatus_24162037.fromCode(orderStatus)
+                .map(OrderStatus_24162037::getBadgeColor)
+                .orElse("secondary");
+    }
     public BigDecimal getTotalAmount() { return totalAmount; }
     public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
     public LocalDateTime getCreatedAt() { return createdAt; }

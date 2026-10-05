@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import vn.hcmute.de4.model.CartItem_24162037;
 import vn.hcmute.de4.model.CheckoutForm_24162037;
 import vn.hcmute.de4.model.Order_24162037;
+import vn.hcmute.de4.model.OrderStatus_24162037;
 import vn.hcmute.de4.model.Product_24162037;
 import vn.hcmute.de4.repository.CartRepository_24162037;
 import vn.hcmute.de4.repository.OrderRepository_24162037;
@@ -48,7 +49,12 @@ public class OrderService_24162037 {
         cartRepository.clear(userId);
         return order;
     }
-    public List<Order_24162037> findOrders(Long userId) { return orderRepository.findByUser(userId); }
+    public List<Order_24162037> findOrders(Long userId, String status) {
+        String statusCode = OrderStatus_24162037.fromCode(status)
+                .map(OrderStatus_24162037::getCode)
+                .orElse(null);
+        return orderRepository.findByUser(userId, statusCode);
+    }
     public Optional<Order_24162037> findOrder(Long userId, Long orderId) { return orderRepository.findOwnedById(orderId, userId); }
     private void validateForm(CheckoutForm_24162037 form) {
         if (form == null || blank(form.getReceiverName()) || blank(form.getReceiverPhone()) || blank(form.getShippingAddress())) throw new IllegalArgumentException("Vui lòng nhập tên người nhận, số điện thoại và địa chỉ giao hàng.");

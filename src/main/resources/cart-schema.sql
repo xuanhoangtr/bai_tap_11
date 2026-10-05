@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS de4_order_items (
 
 CREATE INDEX IF NOT EXISTS idx_de4_cart_items_user ON de4_cart_items(user_id);
 CREATE INDEX IF NOT EXISTS idx_de4_orders_user_created ON de4_orders(user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_de4_orders_user_status_created ON de4_orders(user_id, order_status, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_de4_order_items_order ON de4_order_items(order_id);
 
 INSERT INTO de4_products (product_code, product_name, description, price, stock, image, category_name) VALUES
